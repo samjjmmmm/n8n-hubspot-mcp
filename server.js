@@ -5,8 +5,8 @@ import fetch from "node-fetch";
 const app = express();
 app.use(bodyParser.json());
 
-// Your n8n webhook URL (replace with your actual one)
-const N8N_WEBHOOK_URL = "https://aitenders.app.n8n.cloud/webhook-test/8e0a183d-9ede-4335-9859-960cc398016f";
+// ✅ Use production webhook URL from your live n8n workflow
+const N8N_WEBHOOK_URL = "https://aitenders.app.n8n.cloud/webhook/8e0a183d-9ede-4335-9859-960cc398016f";
 
 // MCP required metadata
 const MCP_VERSION = "0.1.0";
