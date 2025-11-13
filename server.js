@@ -5,15 +5,22 @@ import fetch from "node-fetch";
 const app = express();
 app.use(bodyParser.json());
 
-// === MCP MANIFEST ===
-app.get("/manifest.json", (req, res) => {
+// Your n8n webhook URL (replace with your actual one)
+const N8N_WEBHOOK_URL = "https://aitenders.app.n8n.cloud/webhook-test/8e0a183d-9ede-4335-9859-960cc398016f";
+
+// MCP required metadata
+const MCP_VERSION = "0.1.0";
+
+// ---- MCP ROOT ENDPOINT ----
+app.get("/", (req, res) => {
   res.json({
-    name: "n8n-hubspot",
-    description: "Fetches HubSpot data via n8n webhook",
+    mcp: MCP_VERSION,
+    name: "hubspot-mcp",
+    version: "1.0.0",
     tools: [
       {
-        name: "getHubSpotDealSummary",
-        description: "Gets all notes and emails from HubSpot for a deal",
+        name: "get_deal_data",
+        description: "Fetch merged HubSpot Engagements from n8n webhook",
         input_schema: {
           type: "object",
           properties: {
@@ -26,22 +33,41 @@ app.get("/manifest.json", (req, res) => {
   });
 });
 
-// === TOOL HANDLER ===
-app.post("/tools/getHubSpotDealSummary", async (req, res) => {
-  const { dealId } = req.body;
-  try {
-    const result = await fetch("https://aitenders.app.n8n.cloud/webhook/hubspot-deal-summary", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dealId })
-    });
-    const data = await result.json();
-    res.json(data);
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ error: "Failed to call n8n webhook" });
+// ---- MCP TOOL EXECUTION ENDPOINT ----
+app.post("/call", async (req, res) => {
+  const { tool, arguments: args } = req.body;
+
+  if (tool === "get_deal_data") {
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dealId: args.dealId })
+      });
+
+      const json = await response.json();
+
+      return res.json({
+        content: json,
+        isError: false
+      });
+
+    } catch (err) {
+      return res.json({
+        content: { error: err.message },
+        isError: true
+      });
+    }
   }
+
+  res.json({
+    content: { error: "Unknown tool" },
+    isError: true
+  });
 });
 
-const PORT = process.env.PORT || 3333;
-app.listen(PORT, () => console.log(`✅ MCP server running on port ${PORT}`));
+// Start server
+const port = process.env.PORT || 10000;
+app.listen(port, () => {
+  console.log(`MCP server running on port ${port}`);
+});
