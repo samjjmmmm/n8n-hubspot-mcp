@@ -88,31 +88,3 @@ const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log("MCP server running on port " + port);
 });
-```
-
-5. **Paste it into GitHub**
-6. **Scroll down** - the file should end with the `});` after `app.listen`
-7. **Check**: The file should be exactly **91 lines** (no more, no less)
-8. **Commit**: Add message "Clean server.js - remove all instructions"
-9. Click **"Commit changes"**
-
----
-
-## Important: Copy ONLY the Code
-
-When you copy:
-- ✅ Start from the first `import` line
-- ✅ End at the last `});` 
-- ❌ Don't copy anything before or after
-- ❌ Don't copy line numbers
-- ❌ Don't copy markdown formatting like backticks
-
----
-
-## After You Commit:
-
-1. Wait 1-2 minutes for Render to deploy
-2. Check the Logs - you should see:
-```
-   Build successful 🎉
-   MCP server running on port 10000
