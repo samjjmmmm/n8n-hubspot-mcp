@@ -90,31 +90,29 @@ app.listen(port, () => {
 });
 ```
 
-6. **Scroll down** and click **"Commit changes"**
-7. Add message: "Fix syntax error - clean code"
-8. Click **"Commit changes"**
+5. **Paste it into GitHub**
+6. **Scroll down** - the file should end with the `});` after `app.listen`
+7. **Check**: The file should be exactly **91 lines** (no more, no less)
+8. **Commit**: Add message "Clean server.js - remove all instructions"
+9. Click **"Commit changes"**
 
 ---
 
-## Wait for Render to Deploy
+## Important: Copy ONLY the Code
 
-1. Go back to your Render dashboard
-2. Watch the **Events** section
-3. Wait for **"Deploy live"** with green checkmark ✅
-4. This should take 1-2 minutes
+When you copy:
+- ✅ Start from the first `import` line
+- ✅ End at the last `});` 
+- ❌ Don't copy anything before or after
+- ❌ Don't copy line numbers
+- ❌ Don't copy markdown formatting like backticks
 
 ---
 
-## Then Test
+## After You Commit:
 
-Once you see "Deploy live" ✅:
-
-1. Open: `https://n8n-hubspot-mcp.onrender.com/sse`
-   - You should see streaming data (not an error!)
-
-2. **Restart Claude completely**
-   - Quit and reopen
-
-3. Try in Claude:
+1. Wait 1-2 minutes for Render to deploy
+2. Check the Logs - you should see:
 ```
-   use hubspot-mcp.get_deal_data with {"dealId": "43694833922"}
+   Build successful 🎉
+   MCP server running on port 10000
